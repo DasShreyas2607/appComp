@@ -45,4 +45,8 @@ class Actions(navController: NavHostController) {
     val upPress: () -> Unit = {
         navController.popBackStack()
     }
+    val viewcart:()-> Unit ={
+        navController.navigate("toshowcart")
+    }
+
 }

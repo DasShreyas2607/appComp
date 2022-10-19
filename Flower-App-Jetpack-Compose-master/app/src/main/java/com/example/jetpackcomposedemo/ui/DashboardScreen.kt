@@ -5,10 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,11 +20,17 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.jetpackcomposedemo.CartViewModel
 import com.example.jetpackcomposedemo.R
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun DashboardScreen() {
+fun DashboardScreen(
+    cartViewModel: CartViewModel = viewModel()
+) {
+
+    val UiState by cartViewModel.uiState.collectAsState()
     val selectedIndex = remember { mutableStateOf(0) }
     Surface(modifier = Modifier.fillMaxSize()) {
         Scaffold(
@@ -49,6 +52,7 @@ fun DashboardScreen() {
                                 1 -> {
                                 }
                                 2 -> {
+                                    showcart()
                                 }
                                 3 -> {
                                 }
@@ -100,8 +104,11 @@ fun CustomTopAppBar() {
 }
 
 @Composable
-fun CustomBottomBar(selectedIndex: MutableState<Int>) {
+fun CustomBottomBar(selectedIndex: MutableState<Int>,
+                    cartViewModel: CartViewModel = viewModel()) {
 
+
+    val UiState by cartViewModel.uiState.collectAsState()
     val listItems = listOf("Home", "Location", "Cart", "Profile")
 
     Card(
@@ -131,10 +138,13 @@ fun CustomBottomBar(selectedIndex: MutableState<Int>) {
                                 )
                             }
                             2 -> {
+
                                 TabIcons(
                                     ImageBitmap.imageResource(id = R.drawable.ic_cart),
                                     isSelected
                                 )
+
+
                             }
                             3 -> {
                                 TabIcons(
@@ -152,7 +162,6 @@ fun CustomBottomBar(selectedIndex: MutableState<Int>) {
         }
     }
 }
-
 @Composable
 fun TabIcons(icon: ImageBitmap, isTintColor: Boolean) {
     if (isTintColor) {

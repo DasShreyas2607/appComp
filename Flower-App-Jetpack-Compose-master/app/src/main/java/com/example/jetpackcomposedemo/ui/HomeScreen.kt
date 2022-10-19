@@ -9,9 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,6 +22,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.jetpackcomposedemo.CartViewModel
 import com.example.jetpackcomposedemo.R
 import com.example.jetpackcomposedemo.data.Flowers
 import com.example.jetpackcomposedemo.data.FlowersData
@@ -34,7 +34,10 @@ import com.google.accompanist.pager.rememberPagerState
 
 @Preview
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    cartViewModel: CartViewModel = viewModel()
+) {
+    val UiState by cartViewModel.uiState.collectAsState()
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -59,7 +62,7 @@ fun HomeScreen() {
                     modifier = Modifier.weight(1f)
                 )
                 Text(
-                    text = "View All",
+                    text = "View All(Cart Value=${UiState.total})",
                     style = MaterialTheme.typography.subtitle2.copy(color = colorPrimary)
                 )
             }
@@ -160,7 +163,10 @@ private fun PopularFlowersList() {
 }
 
 @Composable
-private fun FlowerCard(flower: Flowers) {
+private fun FlowerCard(flower: Flowers,
+                       cartViewModel: CartViewModel = viewModel()) {
+    val UiState by cartViewModel.uiState.collectAsState()
+
     Card(
         shape = RoundedCornerShape(14.dp),
         backgroundColor = Color.White,
@@ -205,12 +211,18 @@ private fun FlowerCard(flower: Flowers) {
                             shape = RoundedCornerShape(10.dp)
                         )
                 ) {
-                    Icon(
-                        Icons.Default.Add,
-                        tint = Color.White,
-                        modifier = Modifier.padding(10.dp),
-                        contentDescription = "flower_card_icon"
-                    )
+                    Button(onClick = {
+                        cartViewModel.update(flower);
+                    }) {
+
+                        Icon(
+                            Icons.Default.Add,
+                            tint = Color.White,
+                            modifier = Modifier.padding(10.dp),
+                            contentDescription = "flower_card_icon"
+                        )
+
+                    }
                 }
             }
         }

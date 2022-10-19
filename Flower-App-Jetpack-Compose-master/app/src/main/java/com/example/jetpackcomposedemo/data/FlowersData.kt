@@ -12,13 +12,25 @@ object FlowersData{
             price = "$650.00",
             image = R.drawable.ic_pink_rose_bouquet
         ),
-        Flowers(name = "Angle",
+        Flowers(name ="lotus",
+        price = "$2.00",
+        image = R.drawable.lotus),
+
+        Flowers(name ="Lavender",
+            price = "$2.00",
+            image = R.drawable.lavender),
+        Flowers(name ="Marigold",
+            price = "$2.00",
+            image = R.drawable.marigold),
+
+        Flowers(name = "AngleV2",
             price = "$570.00",
             image = R.drawable.ic_red_rose_bouquet
         ),
-        Flowers(name = "Jannien",
+        Flowers(name = "JannienV2",
             price = "$650.00",
             image = R.drawable.ic_pink_rose_bouquet
-        )
+        ),
+
     )
 }
